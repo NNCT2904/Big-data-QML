@@ -1,0 +1,107 @@
+\documentclass[oneside,notitlepage,12pt,reqno]{article}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+
+\usepackage[british,UKenglish,USenglish,american]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsopn}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage[textsize=small]{todonotes}
+%\usepackage[disable]{todonotes}
+\setuptodonotes{color=blue!30}
+\usepackage{enumitem}
+
+\usepackage{tikz}
+\usetikzlibrary{cd}
+
+\usepackage{verbatim}
+\usepackage[colorlinks, citecolor=blue]{hyperref}
+\usepackage{natbib}
+\setcitestyle{round, sort, numbers, authoryear}
+\usepackage{makeidx}
+
+% \newcommand{\define}[2]{{\em #1}\index{#2}}
+
+% Packages for special symbols and ornaments:
+% \usepackage{calrsfs}
+\usepackage{fourier-orns}
+%\usepackage{hieroglf} \newcommand{\hiero}{\textpmhg}
+\usepackage{clock} %\ClockFrametrue\ClockStyle2
+\usepackage[alpine, weather]{ifsym}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{blindtext}
+\usepackage{soul}
+\usepackage{physics}
+\usepackage{qcircuit}
+\usepackage{subcaption} 
+\usepackage{framed} 
+% \usepackage{authblk}
+
+% % Notes in margins and switching them on and off (if needed)
+\newcommand{\almarginpar}[1]{\leavevmode\marginpar[\raggedleft\small\em{#1}]{}}
+%\newcommand{\almarginpar}[1]{}
+
+% %%%%%%%%%%%%%%
+% % Create notes
+% %%%%%%%%%%%%%%
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{ragged2e}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdfpagemode=FullScreen,
+    }
+
+%PAGE SETUP, remove this after editing
+\textheight=22cm
+\textwidth=15cm
+%\hoffset=-1cm
+\hoffset=1cm
+\voffset=-2cm
+%\parindent=16pt
+\setlength{\marginparwidth}{4cm}
+\reversemarginpar
+\begin{document}
+
+
+\title{QML Big Data}
+\author{Thanh Nguyen}
+\date{2023}
+
+\maketitle
+
+
+\begingroup
+\tableofcontents
+\endgroup
+
+\section{Notes, Todos}
+\todo{Use the command $\backslash\texttt{todo}$ to add note}
+
+Example citation: \cite{2020QiskitGlobal}
+
+Example link using $\backslash\texttt{href}$ command
+\href{https://static.studyin-uk.com/assets/documents/ResearchProposalExample.pdf}{ResearchProposalExample.pdf}
+\begin{framed}
+    High Dimensional Quantum Machine Learning using Qudits
+\end{framed}
+Example Qudits: $\ket{1}, \ket{2}$
+
+\input{IntroductionToQuantum/main.tex}
+\input{IntroductionToMachineLearning/main.tex}
+\input{ReviewOfExistingWorks/main.tex}
+
+\bibliographystyle{unsrtnat}
+\bibliography{references.bib}
+
+\end{document}
