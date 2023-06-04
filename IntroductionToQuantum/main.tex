@@ -1,6 +1,11 @@
 \section{Introduction to Quantum Computing} \label{Sec: Introduction to Quantum Computing}
+\begin{framed}
+    Some references can includes:
 
-\href{https://www.sri.com/story/a-brief-introduction-to-quantum-computing/#:~:text=Quantum%20computing%20is%20generally%20viewed,the%20atomic%20and%20subatomic%20level.}{brief history of quantum computing}
+    \href{https://www.sri.com/story/a-brief-introduction-to-quantum-computing/#:~:text=Quantum%20computing%20is%20generally%20viewed,the%20atomic%20and%20subatomic%20level.}{brief history of quantum computing}
+
+    \href{https://www.intechopen.com/chapters/73811}{Introduction to Quantum Computing}
+\end{framed}
 
 While the term \emph{Quantum Computing} has only began to be the topic in the public eyes, \emph{Quantum Information Science and Mechanics} has aged several decades.
 \emph{Quantum mechanics} is the field of study of nature at the smallest scale.
@@ -9,10 +14,97 @@ Until now, their contribution to the fiels still chimes in many new theories and
 
 In the 80s, Richard Feyman has marked the beginning of Quantum Computers with his envision of a new way of computation based on quantum theories \cite{feynmanSimulatingPhysicsComputers1982}, which can handle problems that are not solvable by a classical computer.
 
-Classical computers can perform calculations based on bits of values one and zero. 
-Instead, the qubit (quantum bit) can have the property of classical bits, or it can take both value of one or zero at the same time, thanks to the ``superposition'' property of quantum systems.
-Theoretically, qubits can achieve an exponential higher information density compared to qubits, with $n$ qubits we can expect to store $2^n$ quantum states, compared to classical bit with $n$ states.
+To build a quantum computer is to manage quantum systems, called qubits.
+To control such qubits, we need to isolate them from any othe interation from the outer world, including but not limited to: light, electromagnetic waves, temperature, etc. 
+While we know for a fact that a system cannot and should not be completely isolated, we need a way to interact and extract information from the system after all.
+However, we can keep the energy and information exchanges minimal.
 
 In practical, the stage of technological development of quantum hardware at the moment is in the early days, comparable to the very first computer models a decade ago.
 At this stage their applications are limited, and quantum systems nowadays are often falls into the scope of Noisy Intermediate-Scale Quantum (NISQ) Computer \cite{brooksQuantumSupremacyHunt2019}.
-Qubits are very vulnerable to environmental noise, decoherence, and gate control precision issues; we are simply not having enough qubits to perform autocorrection codes.
+Qubits in their nature are fragile and vulnerable to environmental noise (called decoherence \cite{brooksQuantumSupremacyHunt2019}), gate control precision issues, and hardware limitation in general.
+Nontheless, in the current development of hardware, we are simply not having enough qubits to perform autocorrection codes.
+
+Classical computers can perform calculations based on bits of values one and zero. 
+The quantum object, however, does not exist in a fully defined state according to quantum physics.
+Before any measurement, or interation to the quantum system, it appears to be a particle yet acts more like a wave.
+Instead, the qubit (quantum bit) can have achieve exponentially higher information density, thanks to property of quantum mechanics that we will discuss later on section \ref{Sec: Superposition}.
+
+Any qubit state can be described as a wave-function or as the total of all possible participating states.
+Such states are coherence to each others and composed of every possible state interfere in a constructive or destructive manner to each others.
+To extract information from a quantum system, we perform observation of them interacting to another physical system.
+Such measurement will result in information loss, as the quantum states are disrupted, and collapse into one outcome.
+
+Quantum computer uses three fundamental properties to represent, store and process the data as quantum states based on quantum mechanics: `superposition', `entanglement', and `interference' \cite{nationalacademiesofsciencesQuantumComputingProgress2019}.
+We discuss each properties in later sections \ref{Sec: Superposition}, \ref{Sec: Entanglement} and \ref{Sec: Interference}.
+
+\subsection{Superposition} \label{Sec: Superposition}
+
+We can describe the superposition of one qubit by a lienar combination of vectors ($\ket{0}$) and ($\ket{1}$):
+\begin{equation}
+    a \ket{0} + b \ket{1}
+    \;\text{where}\;
+    \abs{a}^2 + \abs{b}^2 = 1
+\end{equation}
+Performing observation to the qubit will cause it collapse to either $\ket{1}$ or $\ket{0}$ irreversible, with the probabilities of $\abs{a}^2$ and $\abs{b}^2$ respectively \cite{sutorDancingQubitsHow2019a}.
+
+Superposition property in quantum theory allows any two or more quantum states (in our case the qubits) can be sum up into one mixed quantum state.
+
+Essentially, a qubit can exist in many position at once (hence the name super-position) or we can say multiple state at a time.
+A qubit can be assign the value one ($\ket{1}$) or zero ($\ket{0}$), or it can take both value of one or zero at the same time.
+Which means for every qubit we have twice as much storage.
+Theoretically, qubits can achieve an exponential higher information density compared to qubits, with $n$ qubits we can expect to store $2^n$ quantum states concurrently.
+
+For example, suppose that we have two classical bits, which translate to four different possible states, of which exists one at a time.
+However the two qubits system allows the four possible states to exist at the same time concurrently.
+We will discuss the \emph{entanglement} property which allows multiple qubits to communicate and share states with each other in the next section \ref{Sec: Entanglement}.
+
+\subsection{Entanglement} \label{Sec: Entanglement}
+
+In classical computers, we can expect the performance double if the bits are doubled.
+However in the case of quantum entanglement, adding extra qubits results in exponential power scaling.
+
+Two or more quantum objects can interact with each other such that the state of each qubit cannot be described independently, in any distance, and measurement of one would cause the entire system to collapse.
+
+We use tensor product of the quantum states vectors to describe the collective state of the system.
+Let the two qubits $q_1$ and $q_2$ on the same standard orthorgonal basis ${\ket{0}, \ket{1}}$:
+\begin{equation}
+    \begin{split}
+        & \ket{\psi}_1 = a_1\ket{0} + b_1\ket{1} \\
+        & \ket{\psi}_2 = a_2\ket{0} + b_2\ket{1}
+    \end{split}
+\end{equation}
+The state of the two qubits is their dot product:
+\begin{equation}
+    \begin{split}
+        \ket{\psi}_1\otimes\ket{\psi}_2
+        & = a_1 a_2 \ket{0}\ket{0} + a_1 b_2 \ket{0}\ket{1} + b_1 a_2 \ket{1} \ket{0} + b_1 b_2 \ket{1} \ket{1} \\
+        & = a_1 a_2 \ket{00} + a_1 b_2 \ket{01} + b_1 a_2 \ket{10} + b_1 b_2 \ket{11}
+    \end{split}
+\end{equation}
+Or in general form:
+\begin{equation}
+        \ket{\psi}_1\otimes\ket{\psi}_2
+        = a_{00} \ket{00} + a{01} \ket{01} + a_{10} \ket{10} + a_{11} \ket{11}
+\end{equation}
+such that:
+\begin{equation}
+    \abs{a_{00}}^2 + \abs{a_{01}}^2 + \abs{a_{10}}^2 + \abs{a_{11}}^2 = 1
+\end{equation}
+
+Providing that $\ket{0} = \begin{bmatrix}1 \\ 0\end{bmatrix}$ and $\ket{1} = \begin{bmatrix}0 \\ 1\end{bmatrix}$, we can compute the four states for the 2 qubits system as the column vector:
+\begin{equation}
+    \ket{00} = \begin{bmatrix}1 \\ 0 \\ 0 \\ 0 \end{bmatrix} \;
+    \ket{01} = \begin{bmatrix}0 \\ 1 \\ 0 \\ 0 \end{bmatrix} \;
+    \ket{10} = \begin{bmatrix}0 \\ 0 \\ 1 \\ 0 \end{bmatrix} \;
+    \ket{11} = \begin{bmatrix}0 \\ 0 \\ 0 \\ 1 \end{bmatrix} \;
+\end{equation}
+
+\subsection{Interference} \label{Sec: Interference}
+
+Quantum information exists in a form of wave function of propbability, which can be qubit spin state.
+To interact with the states and perform calculations, we influence the wave function with construcive interference to boost the desired outcome, and use destructive interference to minimise the probabilities of wrong answers.
+
+Quantum interference can be used for programming the system, which is the idea behind quantum operators or gates.
+Quantum circuit is a sequence of gates applies to one or more qubits to form a quantum algorithm, which a the building blocks leads us to solutions.
+
+Some known quantum algorithms are: Grover' search algorithm \cite{groverFastQuantumMechanical1996}, Shor's prime factoring algorithm \cite{shorAlgorithmsQuantumComputation1994} and Deutsch-Jozsa algorithm \cite{deutschRapidSolutionProblems1992}.
