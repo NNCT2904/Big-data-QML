@@ -9,10 +9,45 @@ Machine learning is a field of study that enable computers to learn patterns wit
 Machine learning algorithms build and train models based on sample data, to make decision or prediction on the new data based on past observations \cite{kozaAutomatedDesignBoth1996}.
 Machine learning algorithms are widely used in many applications, including but not limited to computer vision, nature langguage processing, voice recognition and big dats \cite{khanMachineLearningComputer2020, zhangNaturalLanguageProcessing2021,tandelVoiceRecognitionVoice2020,elbouchefryLearningBigData2020, shindeReviewMachineLearning2018}.
 
-While we have observed the reacent bloom of machine learning perfomance with GPT-4 in nature language processing \cite{openaiGPT4TechnicalReport2023}, on a lesser-know field of study, there have been attempts to implement various machine learning algorithms on NISQ devices.
+While we have observed the reacent bloom of machine learning perfomance with GPT-4 in nature language processing \cite{openaiGPT4TechnicalReport2023}, on a lesser-known field of study, there have been attempts to implement various machine learning algorithms on NISQ devices.
 Such hybrid quantum algorithms are called \emph{Variational Quantum Algorithms} (or VQA) \cite{cerezoVariationalQuantumAlgorithms2021}.
+The VQA architecture, which reflects classical machine learning, has translated many classical algorithms into quantum algorithms \cite{zoufalVariationalQuantumBoltzmann2021a, tillyVariationalQuantumEigensolver2021a}.
 
-Some QML based on VQA: \cite{zoufalVariationalQuantumBoltzmann2021a, tillyVariationalQuantumEigensolver2021a}
+Such hybrid technique aims to develop \emph{variational quantum circuits}, which acts as a template for a model, and capable of receiving trainable parameters.
+In a typical VQA process, the quantum circuit $U(x, \theta)$ in the quantum computer will be sampled with configurated parameters $\theta$ refined by a classical computer, such that it can best approximate a given function ${f_\theta(x) \rightarrow y}$, predefined by a training dataset with input-output pairs $(x_t, y_t)$.
+To achieve this, a certain cost function ${C_\theta(x)}$ that measure the distance between the ansatz predicted result and the expected output is minimised.
+In this way we can take advantages of quantum information density, while rely on a range of classical optimisers to find a optimal circuit parameters $\theta$ for solving abovementioned problem, be it regression, or classification, etc.
 
 We have explained the exponential information density in Section \ref{Sec: Superposition} and Section \ref{Sec: Entanglement}.
-The same principals applies when it comes to Quantum machine learning, the quantum state of $n$ qubits in our model is a $2^n$ dimensional complex vector space.
+The same principals applies when it comes to quantum machine learning, the quantum state of $n$ qubits in our model is a $2^n$ dimensional complex vector space.
+Thus we can expect quantum machine learning to out-perform classical machine learning.
+Each component of VQA are discussed as below subsections.
+
+\subsection{Ansatz} \label{Sec: Ansatz}
+
+Typpical QNN developed from VQA process, we estimate the circuit $U(x,\theta)$ injected with the trainable parameters $\theta$ to build and minimise a cost function which we will discuss in section \ref{Sec: Cost Function}.
+
+The QNN $U(x,\theta)$ is commonly built to mirror the multy-layered perceptron network, and its layer are divided as 3 blocks: input, processing and output \cite{cerezoVariationalQuantumAlgorithms2021}:
+
+\begin{itemize}[align=left]
+    \item[- \emph{input block}]: a circuit called feature map that encode the training sample $x$ from classical data into quantum state.
+    \item[- \emph{processing block}]: the parameterised circuit (called \emph{ansatz}) $W(\theta)$ that process the quantum states according to its parameters $\theta$.
+    \item[- \emph{output block}]: measurement layer that translate the quantum state from processing block to classical data, or distribution. Called quantum observable $\mathcal{M}$.
+\end{itemize}
+
+\subsection{Cost Function} \label{Sec: Cost Function}
+
+Inspired by Classical Machine learning, QML transform a given problem into a \emph{Cost Function}.
+This is also the very first step to begin developing QML algorithms.
+The Cost Functin effectively map the values of the trainable parameters $\theta$ into real values, which correspond to the distance to the optimal solution.
+
+For the function ${f_\theta(x) \rightarrow y}$ obtained by measuring the circuit $U(x, \theta)$ abovementioned, we use another function $g_{x,y}(m)$ that calculate the distance from $f_\theta(x_t)$ and the target values $y_t$ as expectation from the dataset.
+The cost function $C$ is defined as the total sum of all distance of all training samples $x_t$:
+\begin{equation}
+    C(\theta) = \sum_{(x,y)} g_{x,y} \left(\Tr[ \mathcal{M} U(x, \theta)^\dagger \ket{0} \bra{0} U(x, \theta) ]\right) \;.
+    \label{Eqn: Cost function}
+\end{equation}
+
+
+
+\subsection{Optimisers} \label{Sec: Optimiser}
