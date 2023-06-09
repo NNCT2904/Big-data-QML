@@ -2,10 +2,11 @@
 
 \href{https://blog.paperspace.com/beginners-guide-to-quantum-machine-learning/}{Beginner's Guide to Quantum Machine Learning}
 
-\cite{kaurIntroductionMachineLearning2021}
+\href{https://towardsdatascience.com/10-gradient-descent-optimisation-algorithms-86989510b5e9}{10 Stochastic Gradient Descent Optimisation Algorithms + Cheatsheet}
 
-Machine learning is a field of study that enable computers to learn patterns without being specifically programmed.
 
+
+Machine learning is a field of study that enable computers to learn patterns without being specifically programmed \cite{kaurIntroductionMachineLearning2021}.
 Machine learning algorithms build and train models based on sample data, to make decision or prediction on the new data based on past observations \cite{kozaAutomatedDesignBoth1996}.
 Machine learning algorithms are widely used in many applications, including but not limited to computer vision, nature langguage processing, voice recognition and big dats \cite{khanMachineLearningComputer2020, zhangNaturalLanguageProcessing2021,tandelVoiceRecognitionVoice2020,elbouchefryLearningBigData2020, shindeReviewMachineLearning2018}.
 
@@ -25,15 +26,77 @@ Each component of VQA are discussed as below subsections.
 
 \subsection{Ansatz} \label{Sec: Ansatz}
 
+
+\begin{figure*}[t]
+    % The file qcircuit.sty is required to display this figure, please put \usepackage{qcircuit} before \begin{document}
+    \centering
+    \begin{subfigure}[c][][c]{.3\textwidth}
+        \centerline{
+            \Qcircuit @C=1em @R=0em{
+                & \multigate{2}{S(x)}    & \qw\\
+                & \ghost{S(x)}           & \qw\\
+                & \ghost{S(x)}           & \qw
+                \gategroup{1}{2}{3}{2}{.6em}{--}
+             }
+        }
+        \caption{feature map}
+        \label{SubFig: Feature map}
+        % \centerline{$S$}
+    \end{subfigure}
+    \begin{subfigure}[c][][c]{.3\textwidth}
+        \centerline{
+            \Qcircuit @C=1em @R=0em {
+                & \multigate{2}{W_1(\theta_1)}    & \multigate{2}{W_2(\theta_2)}    & \qw &        & & \multigate{2}{W_L(\theta_L)}   & \qw\\
+                & \ghost{W_1(\theta_1)}           & \ghost{W_2(\theta_2)}           & \qw & \cdots & & \ghost{W_L(\theta_L)}          & \qw\\
+                & \ghost{W_1(\theta_1)}           & \ghost{W_2(\theta_2)}           & \qw &        & & \ghost{W_L(\theta_L)}          & \qw
+                \gategroup{1}{2}{3}{7}{.7em}{--}
+            }
+        }
+        \caption{ansatz}
+        \label{SubFig: Ansatz}
+        % \centerline{}
+    \end{subfigure}
+    \begin{subfigure}[c][][c]{.3\textwidth}
+        \centerline{
+            \Qcircuit @C=1em @R=0em{
+                & \multigate{2}{\mathcal{M}}    & \qw\\
+                & \ghost{\mathcal{M}}           & \qw\\
+                & \ghost{\mathcal{M}}           & \qw
+                \gategroup{1}{2}{3}{2}{.6em}{--}
+             }
+        }
+        \caption{measurement}
+        \label{SubFig: Measurement}
+        % \centerline{$O$}
+    \end{subfigure}
+    \caption{
+        Typpical MPL QNN circuit that includes layers that grouped into three blocks: (\ref{SubFig: Feature map}) a \emph{feature map} $S(x)$, (\ref{SubFig: Ansatz}) an \emph{ansatz} $W(\theta)$ of consecutive $L$ layers $W_l(\theta_l)$ parametrised variale $\theta=\{\theta_l\}$, and (\ref{SubFig: Measurement}) a \emph{measurement} block $\mathcal{M}$.
+    }\label{Fig: QNN circuit diagram}
+\end{figure*}
+
 Typpical QNN developed from VQA process, we estimate the circuit $U(x,\theta)$ injected with the trainable parameters $\theta$ to build and minimise a cost function which we will discuss in section \ref{Sec: Cost Function}.
 
-The QNN $U(x,\theta)$ is commonly built to mirror the multy-layered perceptron network, and its layer are divided as 3 blocks: input, processing and output \cite{cerezoVariationalQuantumAlgorithms2021}:
+The QNN $U(x,\theta)$ is commonly built to mirror the multy-layered perceptron network, and its layer are divided as 3 blocks: input, processing and output \cite{cerezoVariationalQuantumAlgorithms2021} (see Figure \ref{Fig: QNN circuit diagram}):
 
 \begin{itemize}[align=left]
-    \item[- \emph{input block}]: a circuit called feature map that encode the training sample $x$ from classical data into quantum state.
+    \item[- \emph{input block}]: a circuit $S(x)$ called feature map that encode the classica training data sample $x$ into quantum states.
     \item[- \emph{processing block}]: the parameterised circuit (called \emph{ansatz}) $W(\theta)$ that process the quantum states according to its parameters $\theta$.
     \item[- \emph{output block}]: measurement layer that translate the quantum state from processing block to classical data, or distribution. Called quantum observable $\mathcal{M}$.
 \end{itemize}
+
+In which, the ansatz $W(\theta)$ is a randomised variational circuit, most commonly construct of $L$ consecutive layers of unitary (atomic) circuits (see Figure \ref{Fig: QNN circuit diagram}):
+\begin{equation}
+    W(\theta) = \prod_{l=1}^L W_l(\theta_l)\;,
+    \label{Eqn: Ansatz}
+\end{equation}
+With each unitary layer $W_l(\theta_l)$ defined as:
+\begin{equation}
+    W_l(\theta_l) = e^{-i\theta_l H_l}V_l \;,
+    \label{Eqn: Ansatz layer}
+\end{equation}
+$\theta_l$ being the $l$-th element of the set of parameters $\theta$, which altering the property of corresponding quantum operator, in our case is the quantum gate that rotates the qubit states.
+The value of $\theta$ will be manipulated by classical optimisers, which we will discuss in Section \ref{Sec: Optimiser} \cite{cerezoVariationalQuantumAlgorithms2021}.
+The unitary $V_l$ and hermitian $H_l$ operators are not parameterised.
 
 \subsection{Cost Function} \label{Sec: Cost Function}
 
@@ -47,7 +110,32 @@ The cost function $C$ is defined as the total sum of all distance of all trainin
     C(\theta) = \sum_{(x,y)} g_{x,y} \left(\Tr[ \mathcal{M} U(x, \theta)^\dagger \ket{0} \bra{0} U(x, \theta) ]\right) \;.
     \label{Eqn: Cost function}
 \end{equation}
-
-
+This cost function is commonly calculated by a classical algorithm, in this way it is most suitable and convenient for NISQ machines.
 
 \subsection{Optimisers} \label{Sec: Optimiser}
+
+\emph{Optimiser} is the classical component of VQA.
+VQA process is iteratively controlled by the optimiser, starting by a set of given training data $x$ and a set of initial parameters $\theta$.
+A random selection of values may be used for parameter initialization, or it may be a separate process that requires a thorough understanding of the problem domain,
+such as in the case of barren plateaus mitigation by Skolik et. al. \cite{skolikLayerwiseLearningQuantum2021a} or molecular structures in chemistry.
+
+At each cycle of optimisation, VQA instantiates the variational circuit $U(x, \theta_t)$ by encoding the input $x$ into the feature map $S(x)$, and inject the parameters $\theta_t$ to the ansatz $W(\theta_t)$.
+We then obtain a quantum circuit to be executed on a quantum computer.
+This circuit generates a distribution of possible results with enough sampling runs.
+Which result is then used for estimating the cost function $C(\theta_t)$.
+The optimiser aims to minimise this cost function at each iteration by improving the circuit values $\theta$.
+The optimiser examines the cost landscape through shifting the circuit parameters in order to locate the global minimum and, consequently, the ideal circuit parameter values.
+The procedure is continued until the ideal set of parameter values (within an acceptable margin) is identified, or the process terminates caused by non-convergence \cite{cerezoVariationalQuantumAlgorithms2021}.
+
+VQA's accuracy and training performance are greatly influenced by the optimisation technique.
+There are many classes for optimisation algorithm \cite{zaheerStudyOptimizationAlgorithms2019a}, however, the most common approach to optimise the parameter $\theta$ is to use gradient based algorithms, namelt \emph{Gradient Descent}.
+As the name suggest, Gradient Descent involve moving the parameters progressively (at the speed of `learning rate') toward the direction of the slope within the loss landscape, which should lead to a minimum, corresponding to the solution.
+This method introduce another problem, the local minima, will effectively impede the optimiser ability to move forward unless the learning rate is large enough to jump out of the local minima; this matter can be overcome by using Stochastic Gradient Descent (SGD) \cite{ruderOverviewGradientDescent2017}.
+
+SGD updates the parameters $\theta$ for each training sample using the current gradient multiplied by learning rate $\alpha$.
+The update rule is described as following:
+\begin{equation}
+    \theta_{t+1} = \theta_t - \alpha \triangledown(C(\theta_t))
+    \label{Eqn: SGD update rule}
+\end{equation}
+Where $\triangledown(C(\theta_t))$ is the gradient points towards the ascending direction in the cost function $C$'s landscape, negative the gradient will give us direction down the valley.
