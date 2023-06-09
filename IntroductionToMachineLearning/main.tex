@@ -1,8 +1,12 @@
 \section{Introduction to Machine Learning} \label{Sec: Introduction to Machine Learning}
 
-\href{https://blog.paperspace.com/beginners-guide-to-quantum-machine-learning/}{Beginner's Guide to Quantum Machine Learning}
+\begin{framed}
 
-\href{https://towardsdatascience.com/10-gradient-descent-optimisation-algorithms-86989510b5e9}{10 Stochastic Gradient Descent Optimisation Algorithms + Cheatsheet}
+    \href{https://blog.paperspace.com/beginners-guide-to-quantum-machine-learning/}{Beginner's Guide to Quantum Machine Learning}
+
+    \href{https://towardsdatascience.com/10-gradient-descent-optimisation-algorithms-86989510b5e9}{10 Stochastic Gradient Descent Optimisation Algorithms + Cheatsheet}
+
+\end{framed}
 
 
 
@@ -32,12 +36,12 @@ Each component of VQA are discussed as below subsections.
     \centering
     \begin{subfigure}[c][][c]{.3\textwidth}
         \centerline{
-            \Qcircuit @C=1em @R=0em{
-                & \multigate{2}{S(x)}    & \qw\\
-                & \ghost{S(x)}           & \qw\\
-                & \ghost{S(x)}           & \qw
-                \gategroup{1}{2}{3}{2}{.6em}{--}
-             }
+        \Qcircuit @C=1em @R=0em{
+        & \multigate{2}{S(x)}    & \qw\\
+        & \ghost{S(x)}           & \qw\\
+        & \ghost{S(x)}           & \qw
+        \gategroup{1}{2}{3}{2}{.6em}{--}
+        }
         }
         \caption{feature map}
         \label{SubFig: Feature map}
@@ -45,12 +49,12 @@ Each component of VQA are discussed as below subsections.
     \end{subfigure}
     \begin{subfigure}[c][][c]{.3\textwidth}
         \centerline{
-            \Qcircuit @C=1em @R=0em {
-                & \multigate{2}{W_1(\theta_1)}    & \multigate{2}{W_2(\theta_2)}    & \qw &        & & \multigate{2}{W_L(\theta_L)}   & \qw\\
-                & \ghost{W_1(\theta_1)}           & \ghost{W_2(\theta_2)}           & \qw & \cdots & & \ghost{W_L(\theta_L)}          & \qw\\
-                & \ghost{W_1(\theta_1)}           & \ghost{W_2(\theta_2)}           & \qw &        & & \ghost{W_L(\theta_L)}          & \qw
-                \gategroup{1}{2}{3}{7}{.7em}{--}
-            }
+        \Qcircuit @C=1em @R=0em {
+        & \multigate{2}{W_1(\theta_1)}    & \multigate{2}{W_2(\theta_2)}    & \qw &        & & \multigate{2}{W_L(\theta_L)}   & \qw\\
+        & \ghost{W_1(\theta_1)}           & \ghost{W_2(\theta_2)}           & \qw & \cdots & & \ghost{W_L(\theta_L)}          & \qw\\
+        & \ghost{W_1(\theta_1)}           & \ghost{W_2(\theta_2)}           & \qw &        & & \ghost{W_L(\theta_L)}          & \qw
+        \gategroup{1}{2}{3}{7}{.7em}{--}
+        }
         }
         \caption{ansatz}
         \label{SubFig: Ansatz}
@@ -58,12 +62,12 @@ Each component of VQA are discussed as below subsections.
     \end{subfigure}
     \begin{subfigure}[c][][c]{.3\textwidth}
         \centerline{
-            \Qcircuit @C=1em @R=0em{
-                & \multigate{2}{\mathcal{M}}    & \qw\\
-                & \ghost{\mathcal{M}}           & \qw\\
-                & \ghost{\mathcal{M}}           & \qw
-                \gategroup{1}{2}{3}{2}{.6em}{--}
-             }
+        \Qcircuit @C=1em @R=0em{
+        & \multigate{2}{\mathcal{M}}    & \qw\\
+        & \ghost{\mathcal{M}}           & \qw\\
+        & \ghost{\mathcal{M}}           & \qw
+        \gategroup{1}{2}{3}{2}{.6em}{--}
+        }
         }
         \caption{measurement}
         \label{SubFig: Measurement}
