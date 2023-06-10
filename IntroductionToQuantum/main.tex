@@ -15,7 +15,7 @@ Until now, their contribution to the fiels still chimes in many new theories and
 In the 80s, Richard Feyman has marked the beginning of Quantum Computers with his envision of a new way of computation based on quantum theories \cite{feynmanSimulatingPhysicsComputers1982}, which can handle problems that are not solvable by a classical computer.
 
 To build a quantum computer is to manage quantum systems, called qubits.
-To control such qubits, we need to isolate them from any othe interation from the outer world, including but not limited to: light, electromagnetic waves, temperature, etc. 
+To control such qubits, we need to isolate them from any othe interation from the outer world, including but not limited to: light, electromagnetic waves, temperature, etc.
 While we know for a fact that a system cannot and should not be completely isolated, we need a way to interact and extract information from the system after all.
 However, we can keep the energy and information exchanges minimal.
 
@@ -24,7 +24,7 @@ At this stage their applications are limited, and quantum systems nowadays are o
 Qubits in their nature are fragile and vulnerable to environmental noise (called decoherence \cite{brooksQuantumSupremacyHunt2019}), gate control precision issues, and hardware limitation in general.
 Nontheless, in the current development of hardware, we are simply not having enough qubits to perform autocorrection codes.
 
-Classical computers can perform calculations based on bits of values one and zero. 
+Classical computers can perform calculations based on bits of values one and zero.
 The quantum object, however, does not exist in a fully defined state according to quantum physics.
 Before any measurement, or interation to the quantum system, it appears to be a particle yet acts more like a wave.
 Instead, the qubit (quantum bit) can have achieve exponentially higher information density, thanks to property of quantum mechanics that we will discuss later on section \ref{Sec: Superposition}.
@@ -83,8 +83,8 @@ The state of the two qubits is their dot product:
 \end{equation}
 Or in general form:
 \begin{equation}
-        \ket{\psi}_1\otimes\ket{\psi}_2
-        = a_{00} \ket{00} + a{01} \ket{01} + a_{10} \ket{10} + a_{11} \ket{11}
+    \ket{\psi}_1\otimes\ket{\psi}_2
+    = a_{00} \ket{00} + a{01} \ket{01} + a_{10} \ket{10} + a_{11} \ket{11}
 \end{equation}
 such that:
 \begin{equation}
@@ -108,3 +108,108 @@ Quantum interference can be used for programming the system, which is the idea b
 Quantum circuit is a sequence of gates applies to one or more qubits to form a quantum algorithm, which a the building blocks leads us to solutions.
 
 Some known quantum algorithms are: Grover' search algorithm \cite{groverFastQuantumMechanical1996}, Shor's prime factoring algorithm \cite{shorAlgorithmsQuantumComputation1994} and Deutsch-Jozsa algorithm \cite{deutschRapidSolutionProblems1992}.
+
+\subsection{Quantum gates and Qubit states} \label{Sec: Quantum Gates}
+
+\todo{do H, X, Z, Y, SWAP, CNOT, CX, CY}
+With the three property of quantum information as presented above, one can manipulate the rotation of qubits, in this section we explore a range of quantum gates that perform such works.
+Essentially, the quantum gates are mathematically represented as unitary matrix, as quantum computing is reversible, unless perform projection from quantum states to classical values.
+
+\textbf{The Hadamard gate}, or the $H^{\otimes 1}$ gate, brings one qubit to a superposition state.
+This is among the most common gate operation in quantum computing, because most quantum algorithm begins with taking qubit state to superposition, by applying the $H$ gate.
+The Hadamard gate has the matrix:
+\begin{equation}
+    H = \frac{\sqrt{2}}{2}\begin{bmatrix}
+        1 & 1  \\
+        1 & -1
+    \end{bmatrix}
+\end{equation}
+By matrix multiplication, we have the following examples:
+\begin{equation}
+    \begin{split}
+        & H\ket{0} = \frac{\sqrt{2}}{2}\begin{bmatrix}
+            1 & 1  \\
+            1 & -1
+        \end{bmatrix}
+        \begin{bmatrix}
+            1 \\ 0
+        \end{bmatrix}
+        = \frac{\sqrt{2}}{2}\begin{bmatrix}
+            1 \\ 1
+        \end{bmatrix}
+        = \frac{\sqrt{2}}{2}(\ket{0} + \ket{1})
+        = \ket{+} \\
+        & H\ket{1} = \frac{\sqrt{2}}{2}\begin{bmatrix}
+            1 & 1  \\
+            1 & -1
+        \end{bmatrix}
+        \begin{bmatrix}
+            0 \\ 1
+        \end{bmatrix}
+        = \frac{\sqrt{2}}{2}\begin{bmatrix}
+            1 \\ -1
+        \end{bmatrix}
+        = \frac{\sqrt{2}}{2}(\ket{0} - \ket{1})
+        = \ket{-}
+    \end{split}
+\end{equation}
+
+As can be seen from the above example, the $H$ gate change the basis state of $\{\ket{0}, \ket{1}\}$ to $\{\ket{+}, \ket{-}\}$.
+By nature, all quantum gate are unitaries, and they are their own inverse, thus $HH = I$.
+
+For two or more qubit system, applying $H$ gates to $n$ qubits means to compute the dot product of $H^{\otimes n}$ and $n$ states within the system.
+For example with $H^{\otimes 2}$ that is capable to bring a two qubits system initiated as $\ket{0}$ to superposition state:
+\begin{equation}
+    \begin{split}
+        H^{\otimes 2} & = H \otimes H \\
+        & = \frac{1}{2} \begin{bmatrix}
+            1 & 1  \\
+            1 & -1
+        \end{bmatrix}
+        \begin{bmatrix}
+            1 & 1  \\
+            1 & -1
+        \end{bmatrix} \\
+        & = \frac{1}{2}
+        \begin{bmatrix}
+            1 & 1  & 1  & 1  \\
+            1 & -1 & 1  & -1 \\
+            1 & 1  & -1 & -1 \\
+            1 & -1 & -1 & 1
+        \end{bmatrix} \\
+        & = \frac{\sqrt{2}}{2}\begin{bmatrix}
+            H & H  \\
+            H & -H
+        \end{bmatrix}
+    \end{split}
+\end{equation}
+Visually, we can draw the circuit as Figure \ref{Fig: H gates}, the circuit has two inputs and two outputs.
+\begin{figure}
+    \centerline{
+    \Qcircuit @C=1em @R=1em{
+    \lstick{\ket{0}} & \gate{H}    & \qw\\
+    \lstick{\ket{0}} & \gate{H}    & \qw\\
+    }
+    }
+    \caption{$H$ gates on two qubits system.}
+    \label{Fig: H gates}
+\end{figure}
+
+\textbf{The Rotation X gate}, or the $NOT$ gate, unlike the classical not gate that flip the value of $0$ and $1$, the quantum $X$ gate takes form of matrix:
+\begin{equation}
+    X = \begin{bmatrix}
+        0 & 1 \\
+        1 & 0
+    \end{bmatrix}
+\end{equation}
+This matrix has the property that not only fliping the sign $\ket{0}$ to $\ket{1}$ and vice versa, but also handling any quantum state.
+For $\ket{\psi} = a\ket{0} + b\ket{1}$:
+\begin{equation}
+    X \ket{\psi} = b\ket{0} + a\ket{1}
+\end{equation}
+
+And of couse, applying the $X$ gate twice is equivalence to an identity operation, this also holds true for the classical not operation.
+
+\textbf{The Rotation Y gate},
+
+\textbf{The Rotation Z gate},
