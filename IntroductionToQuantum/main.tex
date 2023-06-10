@@ -111,7 +111,6 @@ Some known quantum algorithms are: Grover' search algorithm \cite{groverFastQuan
 
 \subsection{Quantum gates and Qubit states} \label{Sec: Quantum Gates}
 
-\todo{do H, X, Z, Y, SWAP, CNOT, CX, CY}
 With the three property of quantum information as presented above, one can manipulate the rotation of qubits, in this section we explore a range of quantum gates that perform such works.
 Essentially, the quantum gates are mathematically represented as unitary matrix, as quantum computing is reversible, unless perform projection from quantum states to classical values.
 
@@ -187,8 +186,8 @@ Visually, we can draw the circuit as Figure \ref{Fig: H gates}, the circuit has 
 \begin{figure}
     \centerline{
         \Qcircuit{
-            \lstick{\ket{0}} & \gate{H} & \gate{X} & \qswap     & \ctrl{1}  & \qw\\
-            \lstick{\ket{0}} & \gate{H} & \qw      & \qswap\qwx & \targ     & \qw\\
+            \lstick{\ket{0}} & \gate{H} & \gate{X}  & \ctrl{1}  & \qw\\
+            \lstick{\ket{0}} & \gate{H} & \qw       & \targ     & \qw\\
         }
     }
     \caption{Visualisation for quantum gates operates on a quantum circuit. $H$ gates applies to each qubits, following with an $X$ gate on the first qubit. Then use the first qubit to control the state of the second qubit.}
