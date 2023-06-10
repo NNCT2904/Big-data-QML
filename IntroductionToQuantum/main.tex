@@ -186,12 +186,12 @@ For example with $H^{\otimes 2}$ that is capable to bring a two qubits system in
 Visually, we can draw the circuit as Figure \ref{Fig: H gates}, the circuit has two inputs and two outputs.
 \begin{figure}
     \centerline{
-    \Qcircuit @C=1em @R=1em{
-    \lstick{\ket{0}} & \gate{H}    & \qw\\
-    \lstick{\ket{0}} & \gate{H}    & \qw\\
+        \Qcircuit{
+            \lstick{\ket{0}} & \gate{H} & \gate{X} & \qswap     & \ctrl{1}  & \qw\\
+            \lstick{\ket{0}} & \gate{H} & \qw      & \qswap\qwx & \targ     & \qw\\
+        }
     }
-    }
-    \caption{$H$ gates on two qubits system.}
+    \caption{Visualisation for quantum gates operates on a quantum circuit. $H$ gates applies to each qubits, following with an $X$ gate on the first qubit. Then use the first qubit to control the state of the second qubit.}
     \label{Fig: H gates}
 \end{figure}
 
@@ -210,6 +210,61 @@ For $\ket{\psi} = a\ket{0} + b\ket{1}$:
 
 And of couse, applying the $X$ gate twice is equivalence to an identity operation, this also holds true for the classical not operation.
 
-\textbf{The Rotation Y gate},
+\textbf{The Rotation Y and Z gate} has the matrices:
+\begin{equation}
+    Y = i \begin{bmatrix}
+        0 & -1 \\
+        1 & 0
+    \end{bmatrix}, \;
+    Z = i \begin{bmatrix}
+        1 & 0  \\
+        0 & -1
+    \end{bmatrix},
+\end{equation}
 
-\textbf{The Rotation Z gate},
+For $\ket{\psi} = a\ket{0} + b\ket{1}$:
+\begin{equation}
+    \begin{split}
+        Y \ket{\psi} & = -bi\ket{0} + ai\ket{1} \\
+        Z \ket{\psi} & = a\ket{0} - b\ket{1}
+    \end{split}
+\end{equation}
+
+\textbf{The CNOT gate} (or \textbf{CX} gate).
+This gate operates on two qubits, and used to create entanglement between them.
+This gate is also equivalence to the XOR opearation for classical bits.
+The matrix for the $CNOT$ gate:
+\begin{equation}
+    M = \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 0 \\
+    \end{bmatrix}
+\end{equation}
+
+This operation require two qubits, one of which will control the state of the other one.
+Given two qubit states $\ket{\psi}_1$ and $\ket{\psi}_2$:
+\begin{itemize}
+    \item If the state of $\ket{\psi}_1$ is $\ket{1}$ then apply $X$ opearation to $\ket{\psi}_2$.
+    \item If the state of $\ket{\psi}_1$ is $\ket{0}$ then apply $I$ opearation to $\ket{\psi}_2$.
+    \item In any case, the state $\ket{\psi}_1$ remain unchanged.
+\end{itemize}
+
+\textbf{The CY and CZ gate}.
+Much like the $CX$ gate before, these gates require two qubits, one of them controls the other.
+The matrices for the $CY$ and $CZ$ gates:
+\begin{equation}
+    CY = \begin{bmatrix}
+        1 & 0 & 0 & 0  \\
+        0 & 1 & 0 & 0  \\
+        0 & 0 & 0 & -i \\
+        0 & 0 & i & 0  \\
+    \end{bmatrix}, \;
+    CZ = \begin{bmatrix}
+        1 & 0 & 0 & 0  \\
+        0 & 1 & 0 & 0  \\
+        0 & 0 & 1 & 0  \\
+        0 & 0 & 0 & -1 \\
+    \end{bmatrix}
+\end{equation}
